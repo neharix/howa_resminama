@@ -20,13 +20,13 @@
     ];
 
     // Init the Quill RTE
-    var quill = new Quill('#editor-container', {
-      modules: {
-        toolbar: toolbarOptions
-      },
-      placeholder: 'Описание файла...',
-      theme: 'snow'
-    });
+    // var quill = new Quill('#editor-container', {
+    //   modules: {
+    //     toolbar: toolbarOptions
+    //   },
+    //   placeholder: 'Описание файла...',
+    //   theme: 'snow'
+    // });
 
   });
 })(jQuery);
