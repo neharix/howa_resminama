@@ -30,7 +30,6 @@ class Profile(models.Model):
     files_to_contrib = models.ManyToManyField(
         Document, related_name="reviewer", blank=True
     )
-    text = models.TextField()
 
     def __str__(self):
         return str(self.user)
@@ -88,13 +87,6 @@ class Profile(models.Model):
         if password:
             self.user.set_password(password)
         self.user.save()
-
-
-class DiscussionText(models.Model):
-    author = models.CharField(max_length=200)
-    description = models.TextField()
-    publish_date = models.DateField()
-    document = models.ForeignKey(Document, on_delete=models.CASCADE, null=True)
 
 
 @receiver(post_save, sender=User)

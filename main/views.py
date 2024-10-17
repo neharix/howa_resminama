@@ -11,7 +11,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from .models import DiscussionText, Document
+from .models import Document
 
 extensions = [".pdf", ".docx"]
 
@@ -65,9 +65,9 @@ def signup(request):
     user_exists = User.objects.filter(username=username).count() != 0
     email_exists = User.objects.filter(email=email).count() != 0
     if user_exists:
-        return index(request, alert="Пользователь с таким именем уже существует")
+        return index(request, alert="Berlen atda ulanyjy hasaba alynan")
     if email_exists:
-        return index(request, alert="Пользователь с таким email уже существует")
+        return index(request, alert="Berlen E-Mailda ulanyjy hasaba alynan")
     group = Group.objects.get(name=group_name)
     user = User.objects.create_user(username=username, email=email, password=password)
     login(request, user)
@@ -137,7 +137,7 @@ def add_new_document(request):
     filename = str(request.POST.get("Filename")).replace(" ", "") + "." + ext
     description = request.POST.get("description")
     if str(description) == "<br>" or str(description) == "":
-        description = "Описание отсутствует"
+        description = "Düşündiriş ýok"
     deadline = request.POST.get("Date")
     filepath = user_directory_path(user)
     d = Document.objects.create(
@@ -176,7 +176,6 @@ def review(request, filename):
     user = get_user(request)
     notifications = user.profile.get_notifications()
     personal_context = user.profile.get_statistic()
-    discussions = DiscussionText.objects.filter(document__filename=filename)
     file = Document.objects.filter(filename=filename).filter(
         Q(owner__user__username=user.username)
         | Q(reviewer__user__username=user.username)
@@ -199,7 +198,6 @@ def review(request, filename):
         signs = None
     context = {
         "username": user.username,
-        "discussions": discussions,
         "filename": filename,
         "file_date": file.date,
         "description": file.description,
@@ -222,13 +220,6 @@ def new_review(request, filename):
     document = Document.objects.filter(filename=filename).filter(
         Q(owner__user__username=username) | Q(reviewer__user__username=username)
     )[0]
-    discussion = DiscussionText.objects.create(
-        author=author.username,
-        description=description,
-        publish_date=publish_date,
-        document=document,
-    )
-    discussion.save()
     return redirect("web:document_review", filename)
 
 
@@ -356,7 +347,7 @@ def apply_edits(request, filename):
         # sd = Creator.create(user_id=str(user.id), path_to_file=path, primary=False)
         # file.signed = len(sd.who_signed())
         file.signs_number = recipient_counter
-        file.status = "В процессе"
+        file.status = "Prosesde"
     return redirect("web:document_review", new_name)
 
 
@@ -369,8 +360,8 @@ def sign(request, filename):
     file.signed += 1
     owner = file.owner.all()[0]
     if file.signed >= file.signs_number:
-        file.status = "Готов"
-        owner.notifications += "Файл " + filename + " подписан\n"
+        file.status = "Taýýar"
+        owner.notifications += f"{filename} faýly tassyklandy\n"
         owner.save()
     file.save()
     path = user_directory_path(owner) + filename
@@ -387,21 +378,15 @@ def cancel(request, filename):
         Q(owner__user__username=user.username)
         | Q(reviewer__user__username=user.username)
     )[0]
-    file.status = "Отменен"
+    file.status = "Ret edildi"
     file.signed = 0
     file.save()
     owner = file.owner.all()[0]
     owner.notifications += (
-        "Файл " + filename + " был не принят пользователем " + user.username + "\n"
+        f"{filename} faýly {user.username} ulanyjysy tarapyndan kabul edilmedi\n"
     )
     owner.save()
     return redirect("web:document_review", filename)
-
-
-def certbot_auth(*args, **kwargs):
-    return HttpResponse(
-        "wl02Bwi2-dCe4gkHdf5kP0XM3m-kuKq8WgVMjGvv2AM.BR9XYxef6ASNw28tTqRyB8aLg2syKH2-cqk8ZnUtr_s"
-    )
 
 
 @permission_required("auth.change_group")
@@ -410,21 +395,6 @@ def approve(request, username):
     approve_user.profile.approved = True
     approve_user.save()
     return redirect("web:group")
-
-
-@permission_required("auth.view_group")
-def group_review(request):
-    user = get_user(request)
-    group = Group.objects.filter(name=user.groups.first())[0]
-    persons = User.objects.filter(groups=group).filter(~Q(username=user.username))
-    user = get_user(request)
-    notifications = user.profile.get_notifications()
-    context = {
-        "username": user.username,
-        "notifications": notifications,
-        "persons": persons,
-    }
-    return render(request, "web/group.html", context=context)
 
 
 @permission_required("auth.change_group")

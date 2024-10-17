@@ -1,256 +1,139 @@
 {% extends "layouts/main_layout.html" %}
 {% load static %}
-    {% block title %}Resminamany gözden geçirmek{% endblock title %}
-    {% block head %}
-    <link rel="stylesheet" href="{% static 'quill/css/quill.snow.css' %}">
-    {% endblock head %}
-    {% block body %}
-    <div class="container-fluid">
-      <div class="row">
-        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
-          <div class="main-navbar">
-            <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
-              <a class="navbar-brand w-100 mr-0" href="{% url 'web:cabinet' %}" style="line-height: 25px;">
-                <div class="d-table m-auto">
-                  <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="{% static 'web/images/shards-dashboards-logo.svg' %}" alt="Документус">
-                  <span class="d-none d-md-inline ml-1">Электронный документооборот</span>
-                </div>
-              </a>
-              <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none">
-                <i class="material-icons">&#xE5C4;</i>
-              </a>
-            </nav>
+{% block title %}
+  Resminamany gözden geçirmek
+{% endblock title %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'quill/css/quill.snow.css' %}">
+{% endblock head %}
+{% block body %}
+  <div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+      <span class="text-uppercase page-subtitle"></span>
+      <h3 class="page-title">Мои документы</h3>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg col-md-6 col-sm-6 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+          <div class="card-body p-0 d-flex">
+            <div class="d-flex flex-column m-auto">
+              <div class="stats-small__data text-center">
+                <span class="stats-small__label text-uppercase">Скоро истекает</span>
+                <h6 class="stats-small__value count my-3">{{ deadlines }}</h6>
+              </div>
+            </div>
           </div>
-          <div class="nav-wrapper">
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link " href="{% url 'web:cabinet' %}">
-                  <i class="material-icons">edit</i>
-                  <span>Главная</span>
-                </a>
-              </li>
-                <li class="nav-item">
-                <a class="nav-link " href="{% url 'web:new-post' %}">
-                  <i class="material-icons">note_add</i>
-                  <span>Создать документ</span>
-                </a>
-              </li>
-                {% if perms.auth.view_group %}
-              <li class="nav-item">
-                <a class="nav-link " href="{% url 'web:group' %}">
-                  <i class="material-icons">vertical_split</i>
-                  <span>Компания</span>
-                </a>
-              </li>
-              {% endif %}
-              <li class="nav-item">
-                <a class="nav-link " href="{% url 'web:user' %}">
-                  <i class="material-icons">vertical_split</i>
-                  <span>Профиль</span>
-                </a>
+        </div>
+      </div>
+      <div class="col-lg col-md-6 col-sm-6 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+          <div class="card-body p-0 d-flex">
+            <div class="d-flex flex-column m-auto">
+              <div class="stats-small__data text-center">
+                <span class="stats-small__label text-uppercase">Необходимо подписать</span>
+                <h6 class="stats-small__value count my-3">{{ files_to_sign }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg col-md-4 col-sm-6 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+          <div class="card-body p-0 d-flex">
+            <div class="d-flex flex-column m-auto">
+              <div class="stats-small__data text-center">
+                <span class="stats-small__label text-uppercase">Мои документы</span>
+                <h6 class="stats-small__value count my-3">{{ personal_files }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Small Stats Blocks -->
+    <div class="row">
+      <!-- Discussions Component -->
+      <div class="col-lg-9 col-md-12 col-sm-12 mb-4">
+        <!-- Post Overview -->
+        <div class='card card-small mb-3'>
+          <div class="card-header border-bottom">
+            <h6 class="m-0">Обзор</h6>
+          </div>
+          <div class='card-body p-0'>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item p-3">
+                <span class="d-flex mb-2">
+                  <strong class="mr-1">Имя:</strong> {{ filename }}
+                  {#                          <a class="ml-auto" href="{% url 'web:new_document_download' filename %}">Download</a>#}
+                  <button class="btn btn-sm btn-accent ml-auto"
+                          id="publishButton"
+                          onclick="window.location.href='{% url "web:new_document_download" filename %}';">
+                    Скачать
+                  </button>
+                </span>
+                <span class="d-flex mb-2">
+                  <strong class="mr-1">Истекает:</strong>{{ file_date }}
+                </span>
+                <span class="d-flex mb-2">
+                  <strong class="mr-1">Статус:</strong>
+                  {% if status == 'В процессе' %}
+                    <strong class="text-warning">{{ status }}</strong>
+                  {% else %}
+                    {% if status == "Отменен" %}
+                      <strong class="text-danger">{{ status }}</strong>
+                    {% else %}
+                      <strong class="text-success">{{ status }}</strong>
+                    {% endif %}
+                  {% endif %}
+                </span>
+                {% if owner %}
+                  {% for sign in signs %}
+                    <span class="d-flex mb-2">
+                      <strong class="mr-1">{{ sign }}</strong>
+                      <strong class="text-success">Подписан</strong>
+                    </span>
+                  {% endfor %}
+                {% endif %}
               </li>
             </ul>
           </div>
-        </aside>
-        <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
-          <div class="main-navbar sticky-top bg-white">
-            <!-- Main Navbar -->
-            <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
-              <form class="main-navbar__search w-100 d-none d-md-flex d-lg-flex" method="post" action="{% url 'web:search' %}">
-                  {% csrf_token %}
-                <div class="input-group input-group-seamless ml-3">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <i class="fas"></i>
-                    </div>
-                  </div>
-                </div>
-                  <input class="navbar-search form-control" type="text" placeholder="Поиск..." name="text">
-              </form>
-                <!-- Уведомления -->
-              <ul class="navbar-nav border-left flex-row ">
-                <li class="nav-item border-right dropdown notifications">
-                  <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <div class="nav-link-icon__wrapper">
-                      <i class="material-icons">&#xE7F4;</i>
-                        {% if notifications %}
-                      <span class="badge badge-pill badge-danger">{{  notifications|length }}</span>
-                         {% endif %}
-                    </div>
-                  </a>
-                {% if notifications %}
-                  {% for notification in notifications %}
-                   <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">
-                      <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                          <i class="material-icons">lightbulb_outline</i>
-                        </div>
-                      </div>
-                      <div class="notification__content">
-                        <p>{{ notification }}</p>
-                      </div>
-                    </a>
-                  </div>
-                  {% endfor %}
-                {% else %}
-                    <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">
-                      <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                          <i class="material-icons">notifications_none</i>
-                        </div>
-                      </div>
-                      <div class="notification__content">
-                        <p>Нет оповещений</p>
-                      </div>
-                    </a>
-                  </div>
-                </li>
-                {% endif %}
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <span class="d-none d-md-inline-block">{{ username }}</span>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-small">
-                    <a class="dropdown-item text-danger" href="{% url 'web:logout' %}">
-                      <i class="material-icons text-danger">&#xE879;</i> Выход </a>
-                  </div>
-                </li>
-              </ul>
-              <nav class="nav">
-                <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
-                  <i class="material-icons">&#xE5D2;</i>
-                </a>
-              </nav>
-            </nav>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-12">
+        <!-- Post Overview -->
+        <div class='card card-small mb-3'>
+          <div class="card-header border-bottom">
+            <h6 class="m-0">Действия</h6>
           </div>
-          <!-- / .main-navbar -->
-          <div class="main-content-container container-fluid px-4">
-            <!-- Page Header -->
-            <div class="page-header row no-gutters py-4">
-              <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <span class="text-uppercase page-subtitle">Мои документы</span>
-                <h3 class="page-title">Обзор документа</h3>
-              </div>
-            </div>
-            <!-- End Page Header -->
-            <div class="row">
-              <div class="col-lg col-md-6 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Скоро истекает</span>
-                        <h6 class="stats-small__value count my-3">{{ deadlines }}</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-6 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Необходимо подписать</span>
-                        <h6 class="stats-small__value count my-3">{{ files_to_sign }}</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-4 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Мои документы</span>
-                        <h6 class="stats-small__value count my-3">{{ personal_files }}</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End Small Stats Blocks -->
-            <div class="row">
-              <!-- Discussions Component -->
-            <div class="col-lg-9 col-md-12 col-sm-12 mb-4">
-                <!-- Post Overview -->
-                <div class='card card-small mb-3'>
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">Обзор</h6>
-                  </div>
-                  <div class='card-body p-0'>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item p-3">
-                        <span class="d-flex mb-2">
-                          <strong class="mr-1">Имя:</strong> {{ filename }}
-{#                          <a class="ml-auto" href="{% url 'web:new_document_download' filename %}">Download</a>#}
-                            <button class="btn btn-sm btn-accent ml-auto" id="publishButton"
-                                    onclick="window.location.href='{% url "web:new_document_download" filename %}';">Скачать</button>
-                        </span>
-                        <span class="d-flex mb-2">
-                          <strong class="mr-1">Истекает:</strong>{{ file_date }}
-                        </span>
-                          <span class="d-flex mb-2">
-                          <strong class="mr-1">Статус:</strong>
-                              {% if status == 'В процессе' %}
-                          <strong class="text-warning">{{ status }}</strong>
-                              {% else %}
-                                  {% if status == "Отменен"%}
-                              <strong class="text-danger">{{ status }}</strong>
-                              {% else %}
-                              <strong class="text-success">{{ status }}</strong>
-                              {% endif %}
-                          {% endif %}
-                        </span>
-                      {% if owner %}
-                          {% for sign in signs %}
-                              <span class="d-flex mb-2">
-                                <strong class="mr-1">{{ sign }}</strong>
-                            <strong class="text-success">Подписан</strong>
-                        </span>
-                          {% endfor %}
-                      {% endif %}
-                        <span class="d-flex mb-2">
-                          <i class="material-icons mr-1">calendar_today</i>
-                          <strong class="mr-1">Описание:</strong> {{ description }}
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-12">
-                <!-- Post Overview -->
-                <div class='card card-small mb-3'>
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">Действия</h6>
-                  </div>
-                    <div class="card-header border-bottom mx-auto">
-                    {% if owner %}
-                        <input type="button" class="mb-2 btn btn-primary mr-1" value="Изменить"
-                            onclick="window.location.href='{% url "web:document_edit" filename %}';">
-                    {% endif %}
-                    {% if reviewer and not signed %}
-                        <input type="button" class="mb-2 btn btn-success mr-2" value="Подписать"
-                        onclick="window.location.href='{% url "web:document_sign" filename %}';">
-                        <input type="button" class="mb-2 btn btn-danger mr-2" value="Отменить"
-                        onclick="window.location.href='{% url "web:document_cancel" filename %}';">
-                    {% endif %}
-                    </div>
-                </div>
-            </div>
-        </main>
+          <div class="card-header border-bottom mx-auto">
+            {% if owner %}
+              <input type="button"
+                     class="mb-2 btn btn-primary mr-1"
+                     value="Изменить"
+                     onclick="window.location.href='{% url "web:document_edit" filename %}';">
+            {% endif %}
+            {% if reviewer and not signed %}
+              <input type="button"
+                     class="mb-2 btn btn-success mr-2"
+                     value="Подписать"
+                     onclick="window.location.href='{% url "web:document_sign" filename %}';">
+              <input type="button"
+                     class="mb-2 btn btn-danger mr-2"
+                     value="Отменить"
+                     onclick="window.location.href='{% url "web:document_cancel" filename %}';">
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
-  {% endblock body %}
-  {% block scripts %}
-    {% include "shortcuts/default_scripts.html" %}
-    <script src="{% static 'quill/js/quill.min.js' %}"></script>
-    <script src="{% static 'web/scripts/app/app-blog-new-post.1.1.0.js' %}"></script>
-    <script src="{% static 'web/scripts/app/app-blog-overview.1.1.0.js' %}" ></script>
-    <script src="{% static 'web/scripts/app/app-register-form-validation.js' %}" ></script>
-  {% endblock scripts %}
+  </div>
+{% endblock body %}
+{% block scripts %}
+  {% include "shortcuts/default_scripts.html" %}
+  <script src="{% static 'quill/js/quill.min.js' %}"></script>
+  <script src="{% static 'web/scripts/app/app-blog-new-post.1.1.0.js' %}"></script>
+  <script src="{% static 'web/scripts/app/app-blog-overview.1.1.0.js' %}"></script>
+  <script src="{% static 'web/scripts/app/app-register-form-validation.js' %}"></script>
+{% endblock scripts %}

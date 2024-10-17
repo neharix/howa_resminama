@@ -9,7 +9,6 @@ urlpatterns = [
     path("logout/", views.log_out, name="logout"),
     path("signup/", views.signup, name="signup"),
     path("user/", views.user_page, name="user"),
-    path("group/", views.group_review, name="group"),
     path("<str:username>/approve/", views.approve, name="approve"),
     path("<str:username>/remove/", views.remove_user, name="remove_user"),
     path("update-account/", views.update_account, name="update_account"),
@@ -25,10 +24,5 @@ urlpatterns = [
     path("<str:filename>/review/new/", views.new_review, name="new_document_review"),
     path(
         "<str:filename>/review/download/", views.download, name="new_document_download"
-    ),
-    path(
-        ".well-known/acme-challenge/wl02Bwi2-dCe4gkHdf5kP0XM3m-kuKq8WgVMjGvv2AM",
-        views.certbot_auth,
-        name="certbot_auth",
     ),
 ]
