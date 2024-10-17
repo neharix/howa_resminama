@@ -10,7 +10,7 @@
   <div class="page-header row no-gutters py-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
       <span class="text-uppercase page-subtitle"></span>
-      <h3 class="page-title">Мои документы</h3>
+      <h3 class="page-title">Resminamany gözden geçirmek</h3>
     </div>
   </div>
   <div class="container-fluid">
@@ -20,7 +20,7 @@
           <div class="card-body p-0 d-flex">
             <div class="d-flex flex-column m-auto">
               <div class="stats-small__data text-center">
-                <span class="stats-small__label text-uppercase">Скоро истекает</span>
+                <span class="stats-small__label text-uppercase">Ýakynda möhleti dolýanlar</span>
                 <h6 class="stats-small__value count my-3">{{ deadlines }}</h6>
               </div>
             </div>
@@ -32,7 +32,7 @@
           <div class="card-body p-0 d-flex">
             <div class="d-flex flex-column m-auto">
               <div class="stats-small__data text-center">
-                <span class="stats-small__label text-uppercase">Необходимо подписать</span>
+                <span class="stats-small__label text-uppercase">Tassyklanmalylar</span>
                 <h6 class="stats-small__value count my-3">{{ files_to_sign }}</h6>
               </div>
             </div>
@@ -44,7 +44,7 @@
           <div class="card-body p-0 d-flex">
             <div class="d-flex flex-column m-auto">
               <div class="stats-small__data text-center">
-                <span class="stats-small__label text-uppercase">Мои документы</span>
+                <span class="stats-small__label text-uppercase">Meniň resminamalarym</span>
                 <h6 class="stats-small__value count my-3">{{ personal_files }}</h6>
               </div>
             </div>
@@ -59,29 +59,29 @@
         <!-- Post Overview -->
         <div class='card card-small mb-3'>
           <div class="card-header border-bottom">
-            <h6 class="m-0">Обзор</h6>
+            <h6 class="m-0">Resminama barada giňişleýin</h6>
           </div>
           <div class='card-body p-0'>
             <ul class="list-group list-group-flush">
               <li class="list-group-item p-3">
                 <span class="d-flex mb-2">
-                  <strong class="mr-1">Имя:</strong> {{ filename }}
+                  <strong class="mr-1">Ady:</strong> {{ filename }}
                   {#                          <a class="ml-auto" href="{% url 'web:new_document_download' filename %}">Download</a>#}
                   <button class="btn btn-sm btn-accent ml-auto"
                           id="publishButton"
                           onclick="window.location.href='{% url "web:new_document_download" filename %}';">
-                    Скачать
+                    Ýüklemek
                   </button>
                 </span>
                 <span class="d-flex mb-2">
-                  <strong class="mr-1">Истекает:</strong>{{ file_date }}
+                  <strong class="mr-1">Möhleti:</strong>{{ file_date }}
                 </span>
                 <span class="d-flex mb-2">
-                  <strong class="mr-1">Статус:</strong>
-                  {% if status == 'В процессе' %}
+                  <strong class="mr-1">Ýagdaýy:</strong>
+                  {% if status == 'Prosesde' %}
                     <strong class="text-warning">{{ status }}</strong>
                   {% else %}
-                    {% if status == "Отменен" %}
+                    {% if status == "Ret edildi" %}
                       <strong class="text-danger">{{ status }}</strong>
                     {% else %}
                       <strong class="text-success">{{ status }}</strong>
@@ -92,7 +92,7 @@
                   {% for sign in signs %}
                     <span class="d-flex mb-2">
                       <strong class="mr-1">{{ sign }}</strong>
-                      <strong class="text-success">Подписан</strong>
+                      <strong class="text-success">Tassyklanan</strong>
                     </span>
                   {% endfor %}
                 {% endif %}
@@ -105,23 +105,23 @@
         <!-- Post Overview -->
         <div class='card card-small mb-3'>
           <div class="card-header border-bottom">
-            <h6 class="m-0">Действия</h6>
+            <h6 class="m-0">Kararlar</h6>
           </div>
           <div class="card-header border-bottom mx-auto">
             {% if owner %}
               <input type="button"
                      class="mb-2 btn btn-primary mr-1"
-                     value="Изменить"
+                     value="Üýtgetmek"
                      onclick="window.location.href='{% url "web:document_edit" filename %}';">
             {% endif %}
             {% if reviewer and not signed %}
               <input type="button"
                      class="mb-2 btn btn-success mr-2"
-                     value="Подписать"
+                     value="Tassyklamak"
                      onclick="window.location.href='{% url "web:document_sign" filename %}';">
               <input type="button"
                      class="mb-2 btn btn-danger mr-2"
-                     value="Отменить"
+                     value="Ret etmek"
                      onclick="window.location.href='{% url "web:document_cancel" filename %}';">
             {% endif %}
           </div>

@@ -11,7 +11,7 @@
   <div class="page-header row no-gutters py-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
       <span class="text-uppercase page-subtitle"></span>
-      <h3 class="page-title">Мои документы</h3>
+      <h3 class="page-title">Resminamany üýtgetmek</h3>
     </div>
   </div>
   <div class="container-fluid">
@@ -34,9 +34,8 @@
               <small class="errorReq mb-3"
                      style="display: none;
                             color: red"
-                     id="emptyFilename"><i></i> Это поле не может быть пустым</small>
+                     id="emptyFilename"><i></i> Bu meýdança boş bolup bilmez</small>
               <div id="editor-container" class="add-new-post__editor mb-1"></div>
-              <input name="description" value="" style="display: none;" id="description">
             </div>
           </div>
           <!-- / Add New Post Form -->
@@ -45,8 +44,8 @@
           <!-- Post Overview -->
           <div class='card card-small mb-3'>
             <div class="card-header border-bottom">
-              <h6 class="m-0">Recipients</h6>
-              <small class="errorReq"  style="display: none; color: red;" id="emptySelect"><i></i> Выберите хотя бы одного пользователя</small>
+              <h6 class="m-0">Kabul ediji</h6>
+              <small class="errorReq"  style="display: none; color: red;" id="emptySelect"><i></i> Ulanyjy saýlaň</small>
             </div>
             <div class='card-body p-0'>
               <ul class="list-group list-group-flush">
@@ -60,7 +59,7 @@
                               style="max-width: 200px"
                               name="selectUser-{{ forloop.counter }}"
                               onchange="return hideRecipient();">
-                        <option>Выберите пользователя</option>
+                        <option>Ulanyjy saýlaň</option>
                         {% for r in recipients %}
                           {% if r == rec %}
                             <option value="{{ r }}" selected>{{ r }}</option>
@@ -87,7 +86,7 @@
                                 id="select-{{ forloop.counter|add:len }}"
                                 name="selectUser-{{ forloop.counter|add:len }}"
                                 onchange="return hideRecipient();">
-                          <option selected>Выберите пользователя</option>
+                          <option selected>Ulanyjy saýlaň</option>
                           {% for rec in recipients %}<option value="{{ rec }}">{{ rec }}</option>{% endfor %}
                           {% for person in persons %}<option value="{{ person }}">{{ person }}</option>{% endfor %}
                         </select>
@@ -95,12 +94,6 @@
                     </div>
                   </li>
                 {% endfor %}
-                <li class="list-group-item px-3">
-                  <button type="button"
-                          class="mb-2 btn btn-primary mr-2"
-                          id="more_recipients_button"
-                          onclick="return more_recipients();">Больше получателей</button>
-                </li>
                 <!-- Конеч цепочки подписей -->
               </ul>
             </div>
@@ -108,35 +101,35 @@
           <!-- / Post Overview -->
           <div class='card card-small mb-3'>
             <div class="card-header border-bottom">
-              <h6 class="m-0">Срок</h6>
+              <h6 class="m-0">Möhlet</h6>
             </div>
             <div class='card-body p-0'>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item p-3">
                   <input type="date" id="Deadline" value="{{ deadline }}" name="Date">
                   <br>
-                  <small class="errorReq" style="display: none; color: red" id="emptyDeadline"><i></i> Дата не может быть пустой</small>
+                  <small class="errorReq" style="display: none; color: red" id="emptyDeadline"><i></i> Sene meýdançasy boş bolup bilmez</small>
                 </li>
               </ul>
             </div>
           </div>
           <div class='card card-small mb-3'>
             <div class="card-header border-bottom">
-              <h6 class="m-0">Файл</h6>
+              <h6 class="m-0">Faýl</h6>
             </div>
             <div class='card-body p-0'>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item p-3">
                   <input type="file" id="File" name="file">
                   <br>
-                  <small class="errorReq"  style="display: none; color: red;" id="emptyFile"><i></i> Загрузите файл</small>
+                  <small class="errorReq"  style="display: none; color: red;" id="emptyFile"><i></i> Faýly ýüklemek</small>
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <button type="submit" class="mb-2 btn btn-primary mr-2">Подтвердить</button>
+      <button type="submit" class="mb-2 btn btn-primary mr-2">Tassyklamak</button>
     </form>
   </div>
   <!-- End Small Stats Blocks -->

@@ -10,7 +10,7 @@
   <div class="page-header row no-gutters py-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
       <span class="text-uppercase page-subtitle"></span>
-      <h3 class="page-title">Мои документы</h3>
+      <h3 class="page-title">Resminama goşmak</h3>
     </div>
   </div>
   <div class="container-fluid">
@@ -27,13 +27,13 @@
             <div class="card-body">
               <input class="form-control form-control-lg mb-1"
                      type="text"
-                     placeholder="Тема"
+                     placeholder="Ady"
                      id="Filename"
                      name="Filename">
               <small class="errorReq mb-3"
                      style="display: none;
                             color: red"
-                     id="emptyFilename"><i></i>Заполните это поле</small>
+                     id="emptyFilename"><i></i>Bu meýdançany dolduruň</small>
               <div id="editor-container" class="add-new-post__editor mb-1"></div>
               <input name="description" value="" style="display: none;" id="description">
             </div>
@@ -43,28 +43,28 @@
         <div class="col-lg-3 col-md-12">
           <div class='card card-small mb-3'>
             <div class="card-header border-bottom">
-              <h6 class="m-0">Срок</h6>
+              <h6 class="m-0">Möhlet</h6>
             </div>
             <div class='card-body p-0'>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item p-3">
                   <input type="date" id="Deadline" value="" name="Date">
                   <br>
-                  <small class="errorReq" style="display: none; color: red" id="emptyDeadline"><i></i>Обязательно выбрать срок</small>
+                  <small class="errorReq" style="display: none; color: red" id="emptyDeadline"><i></i>Hökmän möhleti giriziň</small>
                 </li>
               </ul>
             </div>
           </div>
           <div class='card card-small mb-3'>
             <div class="card-header border-bottom">
-              <h6 class="m-0">Файл</h6>
+              <h6 class="m-0">Faýl</h6>
             </div>
             <div class='card-body p-0'>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item p-3">
                   <input type="file" id="File" name="file">
                   <br>
-                  <small class="errorReq"  style="display: none; color: red;" id="emptyFile"><i></i>Файл должен быть типа ".pdf" или ".docx"</small>
+                  <small class="errorReq"  style="display: none; color: red;" id="emptyFile"><i></i>Faýl ".pdf" ýa-da ".docx" giňeltmesinde bolmaly</small>
                 </li>
               </ul>
             </div>
@@ -72,8 +72,8 @@
           {% if persons %}
             <div class='card card-small mb-3'>
               <div class="card-header border-bottom">
-                <h6 class="m-0">Пользователи</h6>
-                <small class="errorReq"  style="display: none; color: red;" id="emptySelect"><i></i>Необходимо выбрать хотя бы одного пользователя</small>
+                <h6 class="m-0">Ulanyjy</h6>
+                <small class="errorReq"  style="display: none; color: red;" id="emptySelect"><i></i>Kabul ediji ulanyjyny saýlaň</small>
               </div>
               <div class='card-body p-0'>
                 <ul class="list-group list-group-flush">
@@ -86,7 +86,7 @@
                               id="select-1"
                               name="selectUser-1"
                               onchange="return hideRecipient();">
-                        <option selected>Выберите пользователя</option>
+                        <option selected>Ulanyjyny saýlaň</option>
                         {% for person in persons %}<option value="{{ person }}">{{ person }}</option>{% endfor %}
                       </select>
                     </div>
@@ -105,7 +105,7 @@
                                       id="select-{{ forloop.counter|add:"1" }}"
                                       name="selectUser-{{ forloop.counter|add:"1" }}"
                                       onchange="return hideRecipient();">
-                                <option selected>Выберите пользователя</option>
+                                <option selected>Ulanyjyny saýlaň</option>
                                 {% for person in persons %}<option value="{{ person }}">{{ person }}</option>{% endfor %}
                               </select>
                             </div>
@@ -117,12 +117,6 @@
                         {% endfor %}
                       {% endwith %}
                     {% endwith %}
-                    <li class="list-group-item px-3">
-                      <button type="button"
-                              class="mb-2 btn btn-primary mr-2"
-                              id="more_recipients_button"
-                              onclick="return more_recipients();">Больше получателей</button>
-                    </li>
                   {% endif %}
                 </ul>
               </div>
@@ -130,7 +124,7 @@
           {% endif %}
         </div>
       </div>
-      <button type="submit" class="mb-2 btn btn-primary mr-2">Опубликовать</button>
+      <button type="submit" class="mb-2 btn btn-primary mr-2">Ýüklemek</button>
     </form>
   </div>
 {% endblock body %}

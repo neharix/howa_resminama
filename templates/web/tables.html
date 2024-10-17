@@ -8,7 +8,7 @@
   <div class="page-header row no-gutters py-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
       <span class="text-uppercase page-subtitle"></span>
-      <h3 class="page-title">Мои документы</h3>
+      <h3 class="page-title">Meniň resminamalarym</h3>
     </div>
   </div>
   <div class="container-fluid">
@@ -19,7 +19,7 @@
           <div class="card-body p-0 d-flex">
             <div class="d-flex flex-column m-auto">
               <div class="stats-small__data text-center">
-                <span class="stats-small__label text-uppercase">Скоро истекает</span>
+                <span class="stats-small__label text-uppercase">Ýakynda möhleti dolýanlar</span>
                 <h6 class="stats-small__value count my-3">{{ deadlines }}</h6>
               </div>
             </div>
@@ -31,7 +31,7 @@
           <div class="card-body p-0 d-flex">
             <div class="d-flex flex-column m-auto">
               <div class="stats-small__data text-center">
-                <span class="stats-small__label text-uppercase">Необходимо подписать</span>
+                <span class="stats-small__label text-uppercase">Tassyklanmalylar</span>
                 <h6 class="stats-small__value count my-3">{{ files_to_sign }}</h6>
               </div>
             </div>
@@ -43,7 +43,7 @@
           <div class="card-body p-0 d-flex">
             <div class="d-flex flex-column m-auto">
               <div class="stats-small__data text-center">
-                <span class="stats-small__label text-uppercase">Мои документы</span>
+                <span class="stats-small__label text-uppercase">Meniň resminamalarym</span>
                 <h6 class="stats-small__value count my-3">{{ personal_files }}</h6>
               </div>
             </div>
@@ -57,18 +57,17 @@
       <div class="col">
         <div class="card card-small mb-4">
           <div class="card-header border-bottom">
-            <h6 class="m-0">Загружены мной</h6>
+            <h6 class="m-0">Meniň ýüklänlerim</h6>
           </div>
           <div class="card-body p-0 pb-3 text-center">
             <table class="table mb-0">
               <thead class="bg-light">
                 <tr>
-                  <th scope="col" class="border-0">#</th>
-                  <th scope="col" class="border-0">Название</th>
-                  <th scope="col" class="border-0">Истекает</th>
-                  <th scope="col" class="border-0">Описание</th>
-                  <th scope="col" class="border-0">Статус</th>
-                  <th scope="col" class="border-0">Подробнее</th>
+                  <th scope="col" class="border-0">№</th>
+                  <th scope="col" class="border-0">Ady</th>
+                  <th scope="col" class="border-0">Möhletiniň dolýan wagty</th>
+                  <th scope="col" class="border-0">Ýagdaýy</th>
+                  <th scope="col" class="border-0">Giňişleýin</th>
                 </tr>
               </thead>
               <tbody>
@@ -78,22 +77,19 @@
                       <td>{{ forloop.counter }}</td>
                       <td>{{ document.filename }}</td>
                       <td>{{ document.date }}</td>
-                      <td>{{ document.description|slice:":50" }}</td>
                       <td>
-                        {% if document.status == 'В процессе' %}
+                        {% if document.status == 'Prosesde' %}
                           <strong class="text-warning">{{ document.status }}</strong>
-                        {% else %}
-                          {% if document.status == "Отменен" %}
-                            <strong class="text-danger">{{ document.status }}</strong>
-                          {% else %}
-                            <strong class="text-success">{{ document.status }}</strong>
-                          {% endif %}
+                        {% elif document.status == "Ret edildi" %}
+                          <strong class="text-danger">{{ document.status }}</strong>
+                        {% elif document.status == "Taýýar" %}
+                          <strong class="text-success">{{ document.status }}</strong>
                         {% endif %}
                       </td>
                       <td>
                         <input type="button"
                                class="mb-2 btn btn-sm btn-primary mr-1"
-                               value="Обзор"
+                               value="Görmek"
                                onclick="window.location.href='{% url "web:document_review" document.filename %}'">
                       </td>
                     </tr>
@@ -111,18 +107,17 @@
       <div class="col">
         <div class="card card-small overflow-hidden mb-4">
           <div class="card-header bg-dark">
-            <h6 class="m-0 text-white">Необходмо действие</h6>
+            <h6 class="m-0 text-white">Karar bermeliler</h6>
           </div>
           <div class="card-body p-0 pb-3 bg-dark text-center">
             <table class="table table-dark mb-0">
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col" class="border-0">#</th>
-                  <th scope="col" class="border-0">Название</th>
-                  <th scope="col" class="border-0">Истекает</th>
-                  <th scope="col" class="border-0">Описание</th>
-                  <th scope="col" class="border-0">Статус</th>
-                  <th scope="col" class="border-0">Подробнее</th>
+                  <th scope="col" class="border-0">№</th>
+                  <th scope="col" class="border-0">Ady</th>
+                  <th scope="col" class="border-0">Möhletiniň dolýan wagty</th>
+                  <th scope="col" class="border-0">Ýagdaýy</th>
+                  <th scope="col" class="border-0">Giňişleýin</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,22 +127,19 @@
                       <td>{{ forloop.counter }}</td>
                       <td>{{ document.filename }}</td>
                       <td>{{ document.date }}</td>
-                      <td>{{ document.description }}</td>
                       <td>
-                        {% if document.status == 'В процессе' %}
+                        {% if document.status == 'Prosesde' %}
                           <strong class="text-warning">{{ document.status }}</strong>
-                        {% else %}
-                          {% if document.status == "Отменен" %}
-                            <strong class="text-danger">{{ document.status }}</strong>
-                          {% else %}
-                            <strong class="text-success">{{ document.status }}</strong>
-                          {% endif %}
+                        {% elif document.status == "Ret edildi" %}
+                          <strong class="text-danger">{{ document.status }}</strong>
+                        {% elif document.status == "Taýýar" %}
+                          <strong class="text-success">{{ document.status }}</strong>
                         {% endif %}
                       </td>
                       <td>
                         <input type="button"
                                class="mb-2 btn btn-sm btn-primary mr-1"
-                               value="Обзор"
+                               value="Görmek"
                                onclick="window.location.href='{% url "web:document_review" document.filename %}'">
                       </td>
                     </tr>
@@ -159,7 +151,8 @@
         </div>
       </div>
     </div>
-  {% endblock body %}
-  {% block scripts %}
-    {% include "shortcuts/default_scripts.html" %}
-  {% endblock scripts %}
+  </div>
+{% endblock body %}
+{% block scripts %}
+  {% include "shortcuts/default_scripts.html" %}
+{% endblock scripts %}

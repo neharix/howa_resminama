@@ -37,16 +37,15 @@ def log_in(request):
         if user is not None:
             if not user.profile.approved:
                 context = {
-                    "text": "Пожалуйста, подождите,"
-                    " пока администратор группы подтвердит Ваш аккаунт"
+                    "text": "Ulgam dolandyryjy hasabyňyzy tassyklaýança garaşmagyňyzy haýyş edýäris"
                 }
                 return render(request, "web/errors.html", context)
             login(request, user)
         else:
-            context = {"text": "Неверный логин или пароль"}
+            context = {"text": "Ulanyjy ady we/ýa-da açar sözi nädogry"}
             return render(request, "web/errors.html", context)
         return redirect("web:cabinet")
-    context = {"text": "Повторите вход"}
+    context = {"text": "Täzeden girmäge synanyşyň"}
     return render(request, "web/errors.html", context)
 
 
@@ -115,7 +114,7 @@ def notify_users(request, text, document):
         recipient_counter += 1
         if recipient is None:
             break
-        if str(recipient) == "Выберите пользователя":
+        if str(recipient) == "Ulanyjyny saýlaň":
             continue
         signs_number += 1
         # Добавить получателям файл в список файлов на подписание
@@ -146,9 +145,7 @@ def add_new_document(request):
     user.profile.personal_files.add(d)
     user.save()
     path = user_directory_path(user) + filename
-    d.signs_number = notify_users(
-        request, "Файл {} был добавлен в список на подписание", d
-    )
+    d.signs_number = notify_users(request, "{} faýly tassyklama sanawyna girizildi", d)
     d.signed = 0
     d.save()
     handle_uploaded_file(user, request.FILES.get("file"), filename)

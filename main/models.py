@@ -16,7 +16,7 @@ class Document(models.Model):
     description = models.TextField(null=True)
     signs_number = models.PositiveIntegerField(default=0)
     signed = models.PositiveIntegerField(default=0)
-    status = models.CharField(max_length=25, default="В процессе")
+    status = models.CharField(max_length=25, default="Prosesde")
 
     def __str__(self):
         return self.filename
@@ -43,13 +43,13 @@ class Profile(models.Model):
             personal_files = ""
         files_to_contrib = Document.objects.filter(
             reviewer__user__username=self.user.username
-        ).filter(status="В процессе")
+        ).filter(status="Prosesde")
         if files_to_contrib:
             for document in files_to_contrib:
                 deadline = date.fromisoformat(str(document.date))
                 if (
                     deadline - datetime.now().date() <= timedelta(days=1)
-                    and document.status != "Готов"
+                    and document.status != "Taýýar"
                 ):
                     deadlines_count += 1
         else:

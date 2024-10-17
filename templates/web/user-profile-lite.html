@@ -7,7 +7,7 @@
   <div class="page-header row no-gutters py-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
       <span class="text-uppercase page-subtitle"></span>
-      <h3 class="page-title">Мои документы</h3>
+      <h3 class="page-title">Profil</h3>
     </div>
   </div>
   <div class="container-fluid">
@@ -17,7 +17,7 @@
         <div class="col-lg-8">
           <div class="card card-small mb-4">
             <div class="card-header border-bottom">
-              <h6 class="m-0">Детали</h6>
+              <h6 class="m-0">Giňişleýin maglumat</h6>
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item p-3">
@@ -27,12 +27,12 @@
                       {% csrf_token %}
                       <div class="form-row">
                         <div class="form-group col-md-6">
-                          <label for="feFirstName">Ник</label>
+                          <label for="feFirstName">Ulanyjy ady</label>
                           <input type="text"
                                  name="username"
                                  class="form-control"
                                  id="feFirstName"
-                                 placeholder="Username"
+                                 placeholder="Ulanyjy ady"
                                  value="{{ username }}">
                         </div>
                       </div>
@@ -47,15 +47,15 @@
                                  value="{{ email }}">
                         </div>
                         <div class="form-group col-md-6">
-                          <label for="fePassword">Пароль</label>
+                          <label for="fePassword">Açar sözi</label>
                           <input type="password"
                                  class="form-control"
                                  name="password"
                                  id="fePassword"
-                                 placeholder="Password">
+                                 placeholder="Açar sözi">
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-accent">Обновить</button>
+                      <button type="submit" class="btn btn-accent">Täzelemek</button>
                     </form>
                   </div>
                 </div>

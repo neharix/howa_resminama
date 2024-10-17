@@ -60,18 +60,17 @@
         <div class="card card-small mb-4">
           {% if files_found %}
             <div class="card-header border-bottom">
-              <h6 class="m-0">My documents</h6>
+              <h6 class="m-0">Meniň resminamalarym</h6>
             </div>
             <div class="card-body p-0 pb-3 text-center">
               <table class="table mb-0">
                 <thead class="bg-light">
                   <tr>
-                    <th scope="col" class="border-0">#</th>
-                    <th scope="col" class="border-0">Название</th>
-                    <th scope="col" class="border-0">Истекает</th>
-                    <th scope="col" class="border-0">Описание</th>
-                    <th scope="col" class="border-0">Статус</th>
-                    <th scope="col" class="border-0">Подробнее</th>
+                    <th scope="col" class="border-0">№</th>
+                    <th scope="col" class="border-0">Ady</th>
+                    <th scope="col" class="border-0">Möhletiniň dolýan wagty</th>
+                    <th scope="col" class="border-0">Ýagdaýy</th>
+                    <th scope="col" class="border-0">Giňişleýin</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -81,12 +80,11 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ document.filename }}</td>
                         <td>{{ document.date }}</td>
-                        <td>{{ document.description }}</td>
                         <td>
-                          {% if document.status == 'В процессе' %}
+                          {% if document.status == 'Prosesde' %}
                             <strong class="text-warning">{{ document.status }}</strong>
                           {% else %}
-                            {% if document.status == "Отменен" %}
+                            {% if document.status == "Ret edildi" %}
                               <strong class="text-danger">{{ document.status }}</strong>
                             {% else %}
                               <strong class="text-success">{{ document.status }}</strong>
@@ -96,7 +94,7 @@
                         <td>
                           <input type="button"
                                  class="mb-2 btn btn-sm btn-primary mr-1"
-                                 value="Обзор"
+                                 value="Görmek"
                                  onclick="window.location.href='{% url "web:document_review" document.filename %}'">
                         </td>
                       </tr>
@@ -107,7 +105,7 @@
             </div>
           {% else %}
             <div class="card-header border-bottom">
-              <h6 class="m-0">Не найдено</h6>
+              <h6 class="m-0">Hiç zat tapylmady</h6>
             </div>
           {% endif %}
         </div>
