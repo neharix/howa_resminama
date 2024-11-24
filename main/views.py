@@ -140,7 +140,11 @@ def add_new_document(request):
     deadline = request.POST.get("Date")
     filepath = user_directory_path(user)
     d = Document.objects.create(
-        filename=filename, filepath=filepath, date=deadline, description=description
+        filename=filename,
+        filepath=filepath,
+        date=deadline,
+        description=description,
+        user=user,
     )
     user.profile.personal_files.add(d)
     user.save()
@@ -221,8 +225,8 @@ def new_review(request, filename):
 
 
 def download(request, filename):
-    user = get_user(request)
-    file = user_directory_path(user) + filename
+    file_obj = Document.objects.get(filename=filename)
+    file = user_directory_path(file_obj.uploaded_by) + filename
     with open(file, "rb") as f:
         response = HttpResponse(f.read())
         file_type = mimetypes.guess_type(file)

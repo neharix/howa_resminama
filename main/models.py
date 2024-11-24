@@ -12,6 +12,7 @@ from django.dispatch import receiver
 class Document(models.Model):
     filename = models.CharField(max_length=200)
     filepath = models.FilePathField(path=settings.MEDIA_ROOT, null=True)
+    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
     description = models.TextField(null=True)
     signs_number = models.PositiveIntegerField(default=0)
